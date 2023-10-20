@@ -21,8 +21,6 @@ export class VerifyParamsAvailabilityMiddleware implements NestMiddleware {
       },
     });
 
-    console.log(findUser);
-
     if (findUser) throw new HttpException(USER_EXISTS, HttpStatus.BAD_REQUEST);
 
     next();

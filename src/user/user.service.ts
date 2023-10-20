@@ -5,6 +5,7 @@ import { Prisma } from '@prisma/client';
 import { randomUUID } from 'crypto';
 import validateCpf from './utils/verify-cpf';
 import * as bcrypt from 'bcrypt';
+import { select } from './utils/user.select';
 
 @Injectable()
 export class UserServices {
@@ -29,5 +30,13 @@ export class UserServices {
     });
 
     return { ...user, password: undefined };
+  }
+
+  async listUsers(): Promise<UserDto[]> {
+    const users = await this.prisma.user.findMany({
+      select,
+    });
+
+    return users;
   }
 }
