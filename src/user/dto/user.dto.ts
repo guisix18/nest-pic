@@ -1,23 +1,22 @@
+import { Decimal } from '@prisma/client/runtime/library';
 import {
-  IsBoolean,
+  IsDecimal,
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   IsString,
-  Matches,
   MinLength,
 } from 'class-validator';
 
 export interface Shopman {
   id: string;
   userId: string;
-  user: UserDto;
 }
 
 // wallet.model.ts
 export interface Wallet {
   id: string;
-  balance: number;
-  user: UserDto | null;
+  balance: Decimal;
 }
 
 export class UserDto {
@@ -37,16 +36,25 @@ export class UserDto {
   @IsNotEmpty()
   @IsString()
   @MinLength(8, { message: 'The password has to be greater or equal than 8' })
-  @Matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/, {
-    message: 'Password to weak',
-  })
   password: string;
 
   @IsNotEmpty()
   @IsString()
   cpf: string;
 
+  @IsOptional()
   shopman?: Shopman | null;
 
+  @IsOptional()
   wallet?: Wallet | null;
+}
+
+export class FiltersTransactionDto {
+  @IsString()
+  @IsNotEmpty()
+  idUserToReceive: string;
+
+  @IsDecimal()
+  @IsNotEmpty()
+  balanceToBeSent: string;
 }
