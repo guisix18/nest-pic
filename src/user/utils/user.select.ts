@@ -5,4 +5,6 @@ export const select = {
   email: true,
   cpf: false,
   password: false,
+  shopman: true,
+  wallet: true,
 };

@@ -13,6 +13,7 @@ import { VerifyParamsAvailabilityMiddleware } from './middleware/verify-params-a
   imports: [PrismaModule],
   controllers: [UserController],
   providers: [UserServices],
+  exports: [UserServices],
 })
 export class UserModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
