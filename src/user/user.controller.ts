@@ -10,7 +10,8 @@ import {
   Res,
 } from '@nestjs/common';
 import { UserServices } from './user.service';
-import { FiltersTransactionDto, UserDto } from './dto/user.dto';
+import { UserDto } from './dto/user.dto';
+import { FiltersTransactionDto } from './dto/filterTransaction.dto';
 import { Request, Response } from 'express';
 import { IsPublic } from 'src/auth/decorators/is-public.decorator';
 import { User } from '@prisma/client';

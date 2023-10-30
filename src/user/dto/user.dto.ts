@@ -1,6 +1,6 @@
+import { PartialType } from '@nestjs/swagger';
 import { Decimal } from '@prisma/client/runtime/library';
 import {
-  IsDecimal,
   IsEmail,
   IsNotEmpty,
   IsOptional,
@@ -13,7 +13,6 @@ export interface Shopman {
   userId: string;
 }
 
-// wallet.model.ts
 export interface Wallet {
   id: string;
   balance: Decimal;
@@ -49,12 +48,4 @@ export class UserDto {
   wallet?: Wallet | null;
 }
 
-export class FiltersTransactionDto {
-  @IsString()
-  @IsNotEmpty()
-  idUserToReceive: string;
-
-  @IsDecimal()
-  @IsNotEmpty()
-  balanceToBeSent: string;
-}
+export class UpdateUserDto extends PartialType(UserDto) {}

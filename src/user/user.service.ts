@@ -1,6 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { FiltersTransactionDto, UserDto } from './dto/user.dto';
+import { UserDto } from './dto/user.dto';
+import { FiltersTransactionDto } from './dto/filterTransaction.dto';
 import { Prisma } from '@prisma/client';
 import { randomUUID } from 'crypto';
 import validateCpf from './utils/verify-cpf';
