@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { IsDecimal, IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class FiltersTransactionDto {
   @IsString()
