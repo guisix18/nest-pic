@@ -4,4 +4,5 @@ export interface IUser {
   email: string;
   isActive: boolean;
   password: string;
+  shopman: boolean;
 }

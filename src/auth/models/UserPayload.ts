@@ -4,6 +4,7 @@ export interface UserPayload {
   email: string;
   name: string;
   isActive: boolean;
+  shopman: boolean;
   iat?: number;
   exp?: number;
 }

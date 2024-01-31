@@ -22,6 +22,7 @@ export class AuthService {
       email: user.email,
       name: user.name,
       isActive: user.isActive,
+      shopman: user.shopman,
     };
 
     return {
