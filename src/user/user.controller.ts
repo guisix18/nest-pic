@@ -15,6 +15,8 @@ import { FiltersTransactionDto } from './dto/filterTransaction.dto';
 import { Request, Response } from 'express';
 import { IsPublic } from 'src/auth/decorators/is-public.decorator';
 import { User } from '@prisma/client';
+import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
+import { UserFromJwt } from 'src/auth/models/UserFromJwt';
 
 @Controller('user')
 export class UserController {
@@ -47,11 +49,10 @@ export class UserController {
     @Res() response: Response,
     @Req() request: Request,
     @Query() filters: FiltersTransactionDto,
+    @CurrentUser() user: UserFromJwt,
   ): Promise<Response<string>> {
-    const { id } = request.user as User;
-
     const transaction = await this.userServices.sendCashToAnotherUser(
-      id,
+      user,
       filters,
     );
 
