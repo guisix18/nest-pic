@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import { IsDecimal, IsNotEmpty, IsString } from 'class-validator';
 
 export class FiltersTransactionDto {
@@ -5,7 +6,7 @@ export class FiltersTransactionDto {
   @IsNotEmpty()
   idUserToReceive: string;
 
-  @IsDecimal()
   @IsNotEmpty()
-  balanceToBeSent: string;
+  @Transform((a) => +a.value)
+  balanceToBeSent: number;
 }
