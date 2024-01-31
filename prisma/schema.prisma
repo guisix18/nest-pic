@@ -21,6 +21,7 @@ model User {
  shopman Shopman?
  wallet Wallet?
  isActive Boolean @default(true)
+ transactions Transactions[]
 }
 
 model Shopman {
@@ -34,4 +35,18 @@ model Wallet {
   balance Decimal
   user User? @relation(fields: [userId], references: [id])
   userId String? @unique
+}
+
+model Transactions {
+  id String @id
+  amount Decimal
+  createdAt DateTime @default(now())
+  user User @relation(fields: [userId], references: [id])
+  userId String @unique
+  transactionStatus TranscationsStatus
+}
+
+enum TranscationsStatus {
+  ERROR
+  SUCCESS
 }
