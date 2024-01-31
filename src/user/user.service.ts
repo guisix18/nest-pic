@@ -7,6 +7,7 @@ import { randomUUID } from 'crypto';
 import validateCpf from './utils/verify-cpf';
 import * as bcrypt from 'bcrypt';
 import { select } from './utils/user.select';
+import { UserFromJwt } from 'src/auth/models/UserFromJwt';
 
 @Injectable()
 export class UserServices {
@@ -52,18 +53,18 @@ export class UserServices {
   }
 
   async sendCashToAnotherUser(
-    idUser: string,
+    user: UserFromJwt,
     filters: FiltersTransactionDto,
   ): Promise<string> {
     const { idUserToReceive, balanceToBeSent } = filters;
 
     const userLogged = await this.prisma.user.findFirst({
       where: {
-        id: idUser,
+        id: user.id,
       },
       include: {
         wallet: true,
-        shopman: true,
+        shopman: user.shopman,
       },
     });
 
@@ -75,7 +76,6 @@ export class UserServices {
           },
           include: {
             wallet: true,
-            shopman: true,
           },
         });
 
@@ -88,7 +88,7 @@ export class UserServices {
 
         const userBalance = Number(userLogged.wallet.balance);
 
-        if (userBalance < 0 || userBalance < Number(balanceToBeSent)) {
+        if (userBalance < 0 || userBalance < balanceToBeSent) {
           throw new HttpException(
             "You don't have balance to proceed with this transaction",
             400,
@@ -102,8 +102,7 @@ export class UserServices {
           data: {
             wallet: {
               update: {
-                balance:
-                  +userToReceive.wallet.balance + Number(balanceToBeSent),
+                balance: +userToReceive.wallet.balance + balanceToBeSent,
               },
             },
           },
@@ -116,10 +115,22 @@ export class UserServices {
           data: {
             wallet: {
               update: {
-                balance: userBalance - Number(balanceToBeSent),
+                balance: userBalance - balanceToBeSent,
               },
             },
           },
+        });
+
+        const dataTransaction: Prisma.TransactionsCreateInput = {
+          id: randomUUID(),
+          amount: balanceToBeSent,
+          createdAt: new Date(),
+          user: { connect: { id: userLogged.id } },
+          transactionStatus: 'SUCCESS',
+        };
+
+        await prismaTx.transactions.create({
+          data: dataTransaction,
         });
       },
     );
