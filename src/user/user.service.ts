@@ -14,8 +14,6 @@ export class UserServices {
   constructor(private readonly prisma: PrismaService) {}
 
   async createUser(dto: UserDto): Promise<UserDto> {
-    console.log(dto);
-
     const data: Prisma.UserCreateInput = {
       id: randomUUID(),
       name: dto.name,
