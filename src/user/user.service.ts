@@ -3,7 +3,6 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { UserDto } from './dto/user.dto';
 import { FiltersTransactionDto } from './dto/filterTransaction.dto';
 import { Prisma } from '@prisma/client';
-import { randomUUID } from 'crypto';
 import validateCpf from './utils/verify-cpf';
 import * as bcrypt from 'bcrypt';
 import { select } from './utils/user.select';
@@ -15,15 +14,14 @@ export class UserServices {
 
   async createUser(dto: UserDto): Promise<UserDto> {
     const data: Prisma.UserCreateInput = {
-      id: randomUUID(),
       name: dto.name,
       lastName: dto.lastName,
       email: dto.email,
       cpf: validateCpf(dto.cpf),
       password: bcrypt.hashSync(dto.password, 10),
-      wallet: { create: { id: randomUUID(), balance: 300.0 } },
+      wallet: { create: { balance: 300.0 } },
       shopman: dto.shopman && {
-        create: { id: randomUUID() },
+        create: {},
       },
     };
 
@@ -120,7 +118,6 @@ export class UserServices {
         });
 
         const dataTransaction: Prisma.TransactionsCreateInput = {
-          id: randomUUID(),
           amount: balanceToBeSent,
           createdAt: new Date(),
           user: { connect: { id: userLogged.id } },

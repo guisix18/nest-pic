@@ -47,7 +47,6 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   async sendCashToAnotherUser(
     @Res() response: Response,
-    @Req() request: Request,
     @Query() filters: FiltersTransactionDto,
     @CurrentUser() user: UserFromJwt,
   ): Promise<Response<string>> {
